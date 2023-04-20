@@ -1,4 +1,4 @@
-import os, threading, ipaddress, json
+import os, threading, json
 import socket as sock
 
 '''
@@ -7,7 +7,7 @@ first to test udp broadcase packets.
 '''
 
 port = 8888
-interface = '10.1.1.73'
+interface = '192.168.10.107'
 mcast = '224.0.1.0'
 mgroup = (mcast, port)
 data = json.dumps({"sendername": "liux", "context": "sexy-broadcasting"}).encode('utf-8')
@@ -18,7 +18,8 @@ ss.setsockopt(sock.SOL_SOCKET, sock.SO_BROADCAST, 1)
 
 ss.setsockopt(sock.IPPROTO_IP, sock.IP_MULTICAST_TTL, 128)
 
-print("print mcast address: %s" %ss.getsockopt(sock.IPPROTO_IP, sock.IP_MULTICAST_IF))
+
 ss.setsockopt(sock.IPPROTO_IP, sock.IP_MULTICAST_IF, sock.inet_aton(interface))
+print("print mcast address: %s" %ss.getsockopt(sock.IPPROTO_IP, sock.IP_MULTICAST_IF))
 
 ss.sendto(data, (mcast, port))
